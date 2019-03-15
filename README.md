@@ -1,4 +1,5 @@
 # Functional Spring Boot Transaction
+No magic! Run commands in translation explicitly
 
 ```java
 txTemplate.execute(status -> {
