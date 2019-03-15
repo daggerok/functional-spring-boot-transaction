@@ -2,7 +2,7 @@
 No magic! Run commands in translation explicitly
 
 ```java
-txTemplate.execute(status -> {
+transactionTemplate.execute(status -> {
   Message message = Message.of(msg);
   em.persist(message);
   return message;

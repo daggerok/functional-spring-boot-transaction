@@ -73,7 +73,7 @@ public class FunctionalSpringBootTransactionApplication {
           String msg = Objects.requireNonNull(request.get("msg"));
           Message message = Message.of(msg);
           em.persist(message);
-          log.info("3) in tx in future: message = {}, status = {}", () -> message, () -> status);
+          log.info("3) in tx in future: message = {}, completed: {}", () -> message, status::isCompleted);
           return message;
         });
       }, taskExecutor);
@@ -85,7 +85,7 @@ public class FunctionalSpringBootTransactionApplication {
           () -> txTemplate.execute(
               status -> {
                 try (Stream<Message> any = em.createQuery("select m from Message m", Message.class).getResultStream()) {
-                  return any.peek(message -> log.info("received {} with status {}", () -> message, () -> status))
+                  return any.peek(message -> log.info("received {}, completed: {}", () -> message, status::isCompleted))
                             .collect(Collectors.toList());
                 }
               }
